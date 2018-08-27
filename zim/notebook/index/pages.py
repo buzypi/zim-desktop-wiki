@@ -33,6 +33,8 @@ PAGE_EXISTS_UNCERTAIN = 0 # e.g. folder with unknown children - not shown to out
 PAGE_EXISTS_AS_LINK = 1 # placeholder for link target
 PAGE_EXISTS_HAS_CONTENT = 2 # either has content or children have content
 
+nonexistent = {}
+
 
 def emptyParseTree():
 	b = ParseTreeBuilder()
@@ -786,6 +788,8 @@ class PagesTreeModelMixin(TreeModelMixinBase):
 	def get_mytreeiter(self, treepath):
 		if treepath in self.cache:
 			return self.cache[treepath]
+		if treepath in nonexistent:
+			return None
 
 		# Find parent
 		parentpath = treepath[:-1]
@@ -813,6 +817,8 @@ class PagesTreeModelMixin(TreeModelMixinBase):
 			else:
 				break # avoid overwriting cache because of ref count
 
+		if self.cache.get(treepath, None) is None:
+			nonexistent[treepath] = True
 		return self.cache.get(treepath, None)
 
 	def find(self, path):

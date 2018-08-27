@@ -218,7 +218,7 @@ class PageTreeStoreBase(gtk.GenericTreeModel, gtk.TreeDragSource, gtk.TreeDragDe
 				gobject.idle_add(self.flush_cache)
 				return False # delete timeout
 
-			gobject.timeout_add(500, idle_add)
+			#gobject.timeout_add(500, idle_add)
 			self._flush_scheduled = True
 
 		return self.get_mytreeiter(treepath)
